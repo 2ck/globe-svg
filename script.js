@@ -27,6 +27,12 @@ d3.json("https://d3js.org/world-110m.v1.json").then(world => {
         .attr("stroke", "black")
         .attr("d", path);
 
+    // Check if a point is visible on the front side of the globe
+    function isVisible([lon, lat]) {
+        const rotated = d3.geoRotation(projection.rotate())([lon, lat]);
+        return rotated[0] > -90 && rotated[0] < 90;  // Visible if longitude is in this range
+    }
+
     const hamburgCoords = [10.00, 53.55];
     const [x, y] = projection(hamburgCoords);
 
@@ -35,6 +41,10 @@ d3.json("https://d3js.org/world-110m.v1.json").then(world => {
         .attr("cy", y)
         .attr("r", 5)
         .attr("fill", "#00ffff");
+
+    if (!isVisible(hamburgCoords)) {
+        hamburgDot.style("display", "none");
+    }
 
     // Rotation Logic
     let lastX, lastY;
@@ -54,7 +64,12 @@ d3.json("https://d3js.org/world-110m.v1.json").then(world => {
                 // Redraw features
                 land.attr("d", path);
                 const [xNew, yNew] = projection(hamburgCoords);
-                hamburgDot.attr("cx", xNew).attr("cy", yNew);
+
+                if (isVisible(hamburgCoords)) {
+                    hamburgDot.attr("cx", xNew).attr("cy", yNew).style("display", "block");
+                } else {
+                    hamburgDot.style("display", "none");
+                }
 
                 lastX = event.x;
                 lastY = event.y;
