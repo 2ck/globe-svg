@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/topojson.v3.min.js"></script>
+</head>
+<body>
+    <div style="display: flex; align-items: flex-start;">
+    <div style="width: 250px; padding-right: 20px;">
+        <label>Land Color:</label> <input type="color" id="landColor" value="#008000"><br>
+        <label>Ocean Color:</label> <input type="color" id="oceanColor" value="#0000ff"><br>
+        <label>Hamburg Dot:</label> <input type="color" id="hamburgColor" value="#00ffff"><br>
+        <br>
+        <input type="checkbox" id="showHamburg" checked> Show Hamburg<br>
+        <input type="checkbox" id="showOutlines" checked> Show Outlines<br>
+        <br>
+        <button id="downloadSvg">Download SVG</button>
+    </div>
+
+    <svg id="map" width="800" height="800"></svg>
+</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
