@@ -33,6 +33,8 @@ d3.json("https://d3js.org/world-110m.v1.json").then(world => {
         return rotated[0] > -90 && rotated[0] < 90;  // Visible if longitude is in this range
     }
 
+    let showHamburg = true;
+
     const hamburgCoords = [10.00, 53.55];
     const [x, y] = projection(hamburgCoords);
 
@@ -65,11 +67,7 @@ d3.json("https://d3js.org/world-110m.v1.json").then(world => {
                 land.attr("d", path);
                 const [xNew, yNew] = projection(hamburgCoords);
 
-                if (isVisible(hamburgCoords)) {
-                    hamburgDot.attr("cx", xNew).attr("cy", yNew).style("display", "block");
-                } else {
-                    hamburgDot.style("display", "none");
-                }
+                hamburgDot.attr("cx", xNew).attr("cy", yNew).style("display", isVisible(hamburgCoords) && showHamburg ? "block" : "none");
 
                 lastX = event.x;
                 lastY = event.y;
@@ -90,8 +88,10 @@ d3.json("https://d3js.org/world-110m.v1.json").then(world => {
     });
 
     document.getElementById("showHamburg").addEventListener("change", (e) => {
-        hamburgDot.style("display", e.target.checked ? "block" : "none");
+        showHamburg = e.target.checked;
+        hamburgDot.style("display", isVisible(hamburgCoords) && showHamburg ? "block" : "none");
     });
+
 
     document.getElementById("showOutlines").addEventListener("change", (e) => {
         land.attr("stroke", e.target.checked ? "black" : "none");
